@@ -1,8 +1,9 @@
 package BoxOffice.View;
 
-import spark.Request;
-import spark.Response;
-import spark.Route;
+import spark.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This route is taken upon initial connection to the server.
@@ -10,11 +11,25 @@ import spark.Route;
  */
 public class GetHomeRoute implements Route {
 
-	public GetHomeRoute(){
+	private final TemplateEngine templateEngine;
 
+	public GetHomeRoute(TemplateEngine templateEngine){
+		this.templateEngine = templateEngine;
 	}
 
+	@Override
 	public Object handle(Request request, Response response){
-		return null;
+
+		Session httpSession = request.session();
+
+		httpSession.attribute("purchasing", 0);
+		httpSession.attribute("purchaseComplete", 0);
+
+		httpSession.attribute("reporting", 0);
+		httpSession.attribute("reportComplete", 0);
+
+		Map<String, Object> model = new HashMap<>();
+
+		return templateEngine.render(new ModelAndView(model, "home.ftl"));
 	}
 }

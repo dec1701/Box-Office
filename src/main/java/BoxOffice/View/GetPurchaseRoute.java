@@ -2,7 +2,6 @@ package BoxOffice.View;
 
 import BoxOffice.Controller.Sales;
 import spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,13 +17,16 @@ public class GetPurchaseRoute implements Route {
 	// Controller class - will tell Model to update
 	private Sales sales;
 
+	private TemplateEngine templateEngine;
+
 	/**
 	 * Constructor - creates a new instance of GetPurchaseRoute
 	 * @param sales - the Controller class, used to communicate
 	 *              with the Model
 	 */
-	public GetPurchaseRoute(Sales sales){
+	public GetPurchaseRoute(Sales sales, TemplateEngine templateEngine){
 		this.sales = sales;
+		this.templateEngine = templateEngine;
 	}
 
 	/**
@@ -33,22 +35,27 @@ public class GetPurchaseRoute implements Route {
 	 * @param response
 	 * @return
 	 */
+	@Override
 	public Object handle(Request request, Response response){
 		// getting the number of the screen for which tickets are being bought
 		Session httpSession = request.session();
-		int screenNum = httpSession.attribute("screenNum");
-		httpSession.removeAttribute("screenNum");
-
-		// getting the number of tickets being bought
-		int numTix = httpSession.attribute("numTix");
-		httpSession.removeAttribute("numTix");
-
-		sales.makePurchase(screenNum, numTix);
-
 		Map<String, Object> model = new HashMap<>();
-		model.put("complete", 1);
 
-		return new FreeMarkerEngine().render(
-				new ModelAndView(model, "purchase.ftl"));
+		if(httpSession.attribute("purchasing").equals(1)){
+			httpSession.attribute("purchasing", 0);
+			httpSession.attribute("purchaseComplete", 1);
+
+			return templateEngine.render(new ModelAndView(model, "purchase.ftl"));
+		}
+		else if(httpSession.attribute("purchaseComplete").equals(1)){
+			httpSession.attribute("purchaseComplete", 0);
+
+			model.put("complete", 1);
+			return templateEngine.render(new ModelAndView(model, "purchase.ftl"));
+		}
+
+		httpSession.attribute("purchasing", 1);
+		response.redirect("/purchase");
+		return null;
 	}
 }

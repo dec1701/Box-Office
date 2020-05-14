@@ -1,5 +1,6 @@
 package BoxOffice.View;
 
+import BoxOffice.Controller.Sales;
 import spark.*;
 import spark.template.freemarker.FreeMarkerEngine;
 
@@ -14,17 +15,21 @@ import java.util.Map;
  */
 public class PostPurchaseRoute implements Route {
 
-	public PostPurchaseRoute(){
+	private TemplateEngine templateEngine;
+	private Sales sales;
 
+	public PostPurchaseRoute(TemplateEngine templateEngine, Sales sales){
+		this.templateEngine = templateEngine;
 	}
 
+	@Override
 	public Object handle(Request request, Response response){
-		Session httpSession = request.session();
-		httpSession.attribute("screenNum", request.queryParams("screenNum"));
+		int numTix = Integer.parseInt(request.queryParams("numTix"));
+		int screenNum = Integer.parseInt(request.queryParams("screenNum"));
 
-		Map<String, Object> model = new HashMap<>();
+		sales.makePurchase(screenNum, numTix);
 
-		return new FreeMarkerEngine().render(
-				new ModelAndView(model, "purchase.ftl"));
+		response.redirect("/purchase");
+		return null;
 	}
 }

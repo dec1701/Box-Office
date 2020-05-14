@@ -6,6 +6,9 @@
 
 <body>
     <h1>Welcome to the Box Office!</h1>
-    <h2>Are you a customer or an employee?</h2>
-    <input type
+
+    <a href="/purchase">Make a purchase</a>
+
+    <a href="/report">Print a report</a>
+
 </body>

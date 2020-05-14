@@ -2,6 +2,12 @@ package BoxOffice;
 
 import BoxOffice.Controller.Sales;
 import BoxOffice.View.WebServer;
+import spark.TemplateEngine;
+import spark.template.freemarker.FreeMarkerEngine;
+import freemarker.template.Configuration;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -13,7 +19,7 @@ public class App
 	// through command line, the
 	private static int defaultTPS = 20;
 
-	private WebServer webServer;
+	private final WebServer webServer;
 
 	private App(final WebServer webServer){
 		this.webServer = webServer;
@@ -25,11 +31,20 @@ public class App
 
 	public static void main(String[] args) {
 
+		Configuration config = new Configuration();
+		try {
+			config.setDirectoryForTemplateLoading(new File("src/main/resources/spark.template.freemarker"));
+		}catch (IOException e){}
+
+		// INITIALIZING TEMPLATE ENGINE
+
+		final TemplateEngine templateEngine = new FreeMarkerEngine(config);
+
 		// INITIALIZING CONTROLLER CLASS
 
 		Sales sales;
 
-		if(args.length > 0){
+		if(args.length == 0){
 			sales = new Sales(defaultTPS);
 		}
 		else{
@@ -42,12 +57,10 @@ public class App
 		}
 
 		// INITIALIZING WEB SERVER
-		final WebServer webServer = new WebServer(sales);
+		final WebServer webServer = new WebServer(templateEngine, sales);
 
 		// INITIALIZING APP
 		final App app = new App(webServer);
 		app.initRoutes();
 	}
-
-
 }

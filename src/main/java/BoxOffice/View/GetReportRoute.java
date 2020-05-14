@@ -2,7 +2,6 @@ package BoxOffice.View;
 
 import BoxOffice.Controller.Sales;
 import spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +15,14 @@ public class GetReportRoute implements Route {
 
 	private Sales sales;
 
-	public GetReportRoute(Sales sales){
+	private TemplateEngine templateEngine;
+
+	public GetReportRoute(Sales sales, TemplateEngine templateEngine){
 		this.sales = sales;
+		this.templateEngine = templateEngine;
 	}
 
+	@Override
 	public Object handle(Request request, Response response){
 		Session httpSession = request.session();
 		int screenNum = httpSession.attribute("screenNum");
@@ -41,7 +44,6 @@ public class GetReportRoute implements Route {
 		model.put("print", 1);
 		model.put("report", report);
 
-		return new FreeMarkerEngine().render(
-				new ModelAndView(model, "report.ftl"));
+		return templateEngine.render(new ModelAndView(model, "report.ftl"));
 	}
 }

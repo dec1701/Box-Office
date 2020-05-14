@@ -1,7 +1,6 @@
 package BoxOffice.View;
 
 import spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,17 +13,19 @@ import java.util.Map;
  */
 public class PostReportRoute implements Route {
 
-	public PostReportRoute(){
+	private TemplateEngine templateEngine;
 
+	public PostReportRoute(TemplateEngine templateEngine){
+		this.templateEngine = templateEngine;
 	}
 
+	@Override
 	public Object handle(Request request, Response response){
 		Session httpSession = request.session();
 		httpSession.attribute("screenNum", request.queryParams("screenNum"));
 
 		Map<String, Object> model = new HashMap<>();
 
-		return new FreeMarkerEngine().render(
-				new ModelAndView(model, "reoprt.ftl"));
+		return templateEngine.render(new ModelAndView(model, "report.ftl"));
 	}
 }
