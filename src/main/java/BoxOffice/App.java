@@ -1,6 +1,7 @@
 package BoxOffice;
 
 import BoxOffice.Controller.Sales;
+import BoxOffice.View.WebServer;
 
 
 /**
@@ -12,7 +13,19 @@ public class App
 	// through command line, the
 	private static int defaultTPS = 20;
 
+	private WebServer webServer;
+
+	private App(final WebServer webServer){
+		this.webServer = webServer;
+	}
+
+	private void initRoutes(){
+		webServer.initRoutes();
+	}
+
 	public static void main(String[] args) {
+
+		// INITIALIZING CONTROLLER CLASS
 
 		Sales sales;
 
@@ -27,5 +40,14 @@ public class App
 				sales = new Sales(defaultTPS);
 			}
 		}
+
+		// INITIALIZING WEB SERVER
+		final WebServer webServer = new WebServer(sales);
+
+		// INITIALIZING APP
+		final App app = new App(webServer);
+		app.initRoutes();
 	}
+
+
 }
