@@ -21,11 +21,12 @@ public class PostReportRoute implements Route {
 
 	@Override
 	public Object handle(Request request, Response response){
+		int screenNum = Integer.parseInt(request.queryParams("screenNum"));
+
 		Session httpSession = request.session();
-		httpSession.attribute("screenNum", request.queryParams("screenNum"));
+		httpSession.attribute("screenNum", screenNum);
 
-		Map<String, Object> model = new HashMap<>();
-
-		return templateEngine.render(new ModelAndView(model, "report.ftl"));
+		response.redirect("/report");
+		return null;
 	}
 }

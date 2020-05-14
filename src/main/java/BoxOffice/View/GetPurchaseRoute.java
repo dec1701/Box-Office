@@ -1,6 +1,5 @@
 package BoxOffice.View;
 
-import BoxOffice.Controller.Sales;
 import spark.*;
 
 import java.util.HashMap;
@@ -14,18 +13,12 @@ import java.util.Map;
  */
 public class GetPurchaseRoute implements Route {
 
-	// Controller class - will tell Model to update
-	private Sales sales;
-
 	private TemplateEngine templateEngine;
 
 	/**
 	 * Constructor - creates a new instance of GetPurchaseRoute
-	 * @param sales - the Controller class, used to communicate
-	 *              with the Model
 	 */
-	public GetPurchaseRoute(Sales sales, TemplateEngine templateEngine){
-		this.sales = sales;
+	public GetPurchaseRoute(TemplateEngine templateEngine){
 		this.templateEngine = templateEngine;
 	}
 
@@ -40,8 +33,6 @@ public class GetPurchaseRoute implements Route {
 		// getting the number of the screen for which tickets are being bought
 		Session httpSession = request.session();
 		Map<String, Object> model = new HashMap<>();
-
-		System.out.println(httpSession.attribute("purchasing") + " " + httpSession.attribute("purchaseComplete"));
 
 		if(httpSession.attribute("purchasing").equals(1)){
 			System.out.println("Got to rendering");

@@ -7,7 +7,6 @@
 <body>
     <#if complete??>
         <h1>Thank you for your purchase!</h1>
-        <a href="/">Back home...</a>
     <#else>
 
         <h2>Please specify the number of tickets for your purchase and select a screen.</h2>

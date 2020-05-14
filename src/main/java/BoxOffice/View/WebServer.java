@@ -10,7 +10,7 @@ public class WebServer {
 	private static final String HOME_URL = "/";
 	private static final String PURCHASE_URL = "/purchase";
 	private static final String CONFIRM_PURCHASE_URL = "/confirm";
-	private static final String CHOOSE_REPORT_URL = "/report";
+	private static final String REPORT_URL = "/report";
 	private static final String PRINT_REPORT_URL = "/report/print";
 
 	private TemplateEngine templateEngine;
@@ -27,9 +27,9 @@ public class WebServer {
 
 		get(HOME_URL, new GetHomeRoute(templateEngine));
 		post(CONFIRM_PURCHASE_URL, new PostPurchaseRoute(templateEngine, sales));
-		get(PURCHASE_URL, new GetPurchaseRoute(sales, templateEngine));
-		post(CHOOSE_REPORT_URL, new PostReportRoute(templateEngine));
-		get(PRINT_REPORT_URL, new GetReportRoute(sales, templateEngine));
+		get(PURCHASE_URL, new GetPurchaseRoute(templateEngine));
+		post(PRINT_REPORT_URL, new PostReportRoute(templateEngine));
+		get(REPORT_URL, new GetReportRoute(templateEngine, sales));
 
 		System.out.println("WebServer is up");
 	}

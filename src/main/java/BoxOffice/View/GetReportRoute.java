@@ -13,37 +13,47 @@ import java.util.Map;
  */
 public class GetReportRoute implements Route {
 
+	private TemplateEngine templateEngine;
 	private Sales sales;
 
-	private TemplateEngine templateEngine;
+	public GetReportRoute(TemplateEngine templateEngine, Sales sales){
 
-	public GetReportRoute(Sales sales, TemplateEngine templateEngine){
-		this.sales = sales;
 		this.templateEngine = templateEngine;
+		this.sales = sales;
 	}
 
 	@Override
 	public Object handle(Request request, Response response){
 		Session httpSession = request.session();
-		int screenNum = httpSession.attribute("screenNum");
-
-		String report;
-
-		// a screen number of -1 represents that the report should contain
-		// all screens
-		if(screenNum > -1){
-			report = sales.report(screenNum);
-		}
-		else{
-			report = sales.report();
-		}
-
-		response.body(report);
-
 		Map<String, Object> model = new HashMap<>();
-		model.put("print", 1);
-		model.put("report", report);
 
-		return templateEngine.render(new ModelAndView(model, "report.ftl"));
+		if(httpSession.attribute("reporting").equals(1)){
+			httpSession.attribute("reporting", 0);
+			httpSession.attribute("reportComplete", 1);
+			return templateEngine.render(new ModelAndView(model, "report.ftl"));
+		}
+		else if(httpSession.attribute("reportComplete").equals(1)){
+
+			httpSession.attribute("reportComplete", 0);
+
+			model.put("print", 1);
+
+			int screenNum = httpSession.attribute("screenNum");
+
+			httpSession.removeAttribute("screenNum");
+
+			if(screenNum == -1){
+				model.put("report", sales.report());
+			}
+			else{
+				model.put("report", sales.report(screenNum));
+			}
+
+			return templateEngine.render(new ModelAndView(model, "report.ftl"));
+		}
+
+		httpSession.attribute("reporting", 1);
+		response.redirect("/report");
+		return null;
 	}
 }
