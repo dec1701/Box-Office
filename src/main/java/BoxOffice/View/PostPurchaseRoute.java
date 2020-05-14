@@ -20,14 +20,20 @@ public class PostPurchaseRoute implements Route {
 
 	public PostPurchaseRoute(TemplateEngine templateEngine, Sales sales){
 		this.templateEngine = templateEngine;
+		this.sales = sales;
 	}
 
 	@Override
 	public Object handle(Request request, Response response){
+		System.out.println("Attempting purchase...");
+		System.out.println(request.queryParams("numTix"));
+		System.out.println(request.queryParams("screenNum"));
 		int numTix = Integer.parseInt(request.queryParams("numTix"));
 		int screenNum = Integer.parseInt(request.queryParams("screenNum"));
 
 		sales.makePurchase(screenNum, numTix);
+
+		System.out.println("Purchase made w/: " + numTix + " for screen " + screenNum);
 
 		response.redirect("/purchase");
 		return null;

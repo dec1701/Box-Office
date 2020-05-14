@@ -41,13 +41,19 @@ public class GetPurchaseRoute implements Route {
 		Session httpSession = request.session();
 		Map<String, Object> model = new HashMap<>();
 
+		System.out.println(httpSession.attribute("purchasing") + " " + httpSession.attribute("purchaseComplete"));
+
 		if(httpSession.attribute("purchasing").equals(1)){
+			System.out.println("Got to rendering");
 			httpSession.attribute("purchasing", 0);
 			httpSession.attribute("purchaseComplete", 1);
-
+			System.out.println(httpSession.attribute("purchasing") + " " + httpSession.attribute("purchaseComplete"));
 			return templateEngine.render(new ModelAndView(model, "purchase.ftl"));
 		}
 		else if(httpSession.attribute("purchaseComplete").equals(1)){
+
+			System.out.println("Went to purchase complete");
+
 			httpSession.attribute("purchaseComplete", 0);
 
 			model.put("complete", 1);

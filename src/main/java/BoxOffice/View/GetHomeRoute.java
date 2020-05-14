@@ -28,6 +28,8 @@ public class GetHomeRoute implements Route {
 		httpSession.attribute("reporting", 0);
 		httpSession.attribute("reportComplete", 0);
 
+		System.out.println(httpSession.attribute("purchasing") + " " + httpSession.attribute("purchaseComplete"));
+
 		Map<String, Object> model = new HashMap<>();
 
 		return templateEngine.render(new ModelAndView(model, "home.ftl"));
