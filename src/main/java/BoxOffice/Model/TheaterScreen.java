@@ -10,26 +10,30 @@ public class TheaterScreen {
 	private int numSales;
 
 	// The amount of tickets available for sale
-	private int availTickets;
+	private int availTix;
 
 	/**
 	 * Constructor - creates a new instance of a screen
-	 * @param availTickets - the initial amount of tickets available
+	 * @param availTix - the initial amount of tickets available
 	 */
-	public TheaterScreen(int availTickets){
-		this.availTickets = availTickets;
+	public TheaterScreen(int availTix){
+		this.availTix = availTix;
 		this.numSales = 0;  // initially 0 tickets sold
 	}
 
+	public int getNumSales(){ return numSales; }
+
+	public int getAvailTix(){ return availTix; }
+
 	/**
 	 * Update number of sales & number of available tickets
-	 * @param numTickets - number of tickets being purchased
+	 * @param numTix - number of tickets being purchased
 	 */
-	public void makePurchase(int numTickets){
+	public void makePurchase(int numTix){
 		// check that there are enough tickets to satisfy the purchase
-		if(availTickets >= numTickets){
-			numSales += numTickets;
-			availTickets -= numTickets;
+		if(availTix >= numTix){
+			numSales += numTix;
+			availTix -= numTix;
 		}
 		else{
 			// TODO: Exception?
