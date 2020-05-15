@@ -9,6 +9,8 @@
 
     <a href="/purchase">Make a purchase</a>
 
+    <br/>
+
     <a href="/report">Print a report</a>
 
 </body>

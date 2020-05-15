@@ -21,25 +21,22 @@ public class TheaterScreen {
 		this.numSales = 0;  // initially 0 tickets sold
 	}
 
+	// Accessor methods
 	public int getNumSales(){ return numSales; }
-
 	public int getAvailTix(){ return availTix; }
 
 	/**
 	 * Update number of sales & number of available tickets
 	 * @param numTix - number of tickets being purchased
+	 * @return 1 if successful, 0 otherwise
 	 */
-	public void makePurchase(int numTix){
+	public int makePurchase(int numTix){
 		// check that there are enough tickets to satisfy the purchase
 		if(availTix >= numTix){
 			numSales += numTix;
 			availTix -= numTix;
+			return 1;
 		}
-		else{
-			// TODO: Exception?
-		}
+		return 0;
 	}
-
-
-
 }

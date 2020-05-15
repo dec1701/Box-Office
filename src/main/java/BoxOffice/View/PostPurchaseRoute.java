@@ -2,10 +2,6 @@ package BoxOffice.View;
 
 import BoxOffice.Controller.Sales;
 import spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This route is taken when the user has to give information about their
@@ -14,21 +10,38 @@ import java.util.Map;
  * be used in other routes.
  */
 public class PostPurchaseRoute implements Route {
-
-	private TemplateEngine templateEngine;
+	// Controller class - responsible for managing information btwn Model and View
 	private Sales sales;
 
-	public PostPurchaseRoute(TemplateEngine templateEngine, Sales sales){
-		this.templateEngine = templateEngine;
+	/**
+	 * Constructor - creates a new instance of PostPurchaseRoute
+	 * @param sales - the Controller class for communicating w/ the model
+	 */
+	public PostPurchaseRoute(Sales sales){
 		this.sales = sales;
 	}
 
+	/**
+	 * Performs this route's operations:
+	 *      Update the screen's sales & available tickets
+	 * @param request - a Spark request, contains the user's session
+	 *                as well as any query parameters
+	 * @param response - a Spark response
+	 * @return the result of the Template Engine's render
+	 */
 	@Override
 	public Object handle(Request request, Response response){
+		// getting the amount of tickets being purchased & for what screen
 		int numTix = Integer.parseInt(request.queryParams("numTix"));
 		int screenNum = Integer.parseInt(request.queryParams("screenNum"));
 
-		sales.makePurchase(screenNum, numTix);
+		// tell the Controller that the Model needs to update
+		int success = sales.makePurchase(screenNum, numTix);
+
+		// put the return value in the user's session so other routes can
+		// access it
+		Session httpSession = request.session();
+		httpSession.attribute("success", success);
 
 		response.redirect("/purchase");
 		return null;

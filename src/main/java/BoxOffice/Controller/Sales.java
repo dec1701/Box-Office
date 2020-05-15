@@ -3,7 +3,7 @@ package BoxOffice.Controller;
 import BoxOffice.Model.TheaterScreen;
 
 /**
- * Processes all purchases
+ * Responsible for handling information between the Model and View
  */
 public class Sales {
 
@@ -23,9 +23,34 @@ public class Sales {
 		}
 	}
 
+	/**
+	 * Updates the number of sales and number of remaining tickets for
+	 * the designated screen
+	 * @param screenNum - the number of the screen
+	 * @param numTix - the number of tickets being purchases
+	 * @return 1 if successful, 0 otherwise
+	 */
+	public int makePurchase(int screenNum, int numTix){
+		return screens[screenNum].makePurchase(numTix);
+	}
 
-	public void makePurchase(int screenNum, int numTix){
-		screens[screenNum].makePurchase(numTix);
+	/**
+	 * Gets the remaining amount of available tickets for the
+	 * designated screen
+	 * @param screenNum - the number of the screen
+	 * @return the number of available tickets
+	 */
+	public int getRemaining(int screenNum){
+		return screens[screenNum].getAvailTix();
+	}
+
+	/**
+	 * Gets the amount of sales for the designated screen
+	 * @param screenNum - the number of the screen
+	 * @return the number of sales
+	 */
+	public int getSales(int screenNum){
+		return screens[screenNum].getNumSales();
 	}
 
 	/**
