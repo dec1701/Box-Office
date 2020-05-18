@@ -13,4 +13,8 @@
 
     <a href="/report">Print a report</a>
 
+    <br/>
+
+    <a href="/swap">Make an exchange</a>
+
 </body>

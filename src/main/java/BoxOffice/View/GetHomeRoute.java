@@ -45,6 +45,9 @@ public class GetHomeRoute implements Route {
 		httpSession.attribute("reporting", 0);
 		httpSession.attribute("reportComplete", 0);
 
+		httpSession.attribute("swapping", 0);
+		httpSession.attribute("swapComplete", 0);
+
 		// The map of values to fill in to the .ftl file
 		Map<String, Object> model = new HashMap<>();
 

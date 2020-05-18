@@ -35,6 +35,35 @@ public class Sales {
 	}
 
 	/**
+	 * Updates the number of sales and number of remaining tickets for
+	 * the designated screen
+	 * @param screenNum - the number of the screen
+	 * @param numTix - the number of tickets being returned
+	 * @return 1 is successful, 0 otherwise
+	 */
+	private int makeReturn(int screenNum, int numTix){ return screens[screenNum].makeReturn(numTix); }
+
+	/**
+	 * Updates the number of sales and number of remaining tickets for both
+	 * screens
+	 * @param screenNum - the screen being purchased from
+	 * @param returnScreen - the screen having tickets returned
+	 * @param numTix - the number of tickets being exchanged
+	 * @return 1 if successful, 0 if new purchase fails, -1 if return fails
+	 */
+	public int makeExchange(int screenNum, int returnScreen, int numTix){
+		if(screens[screenNum].canPurchase(numTix)){
+			if(screens[returnScreen].canReturn(numTix)){
+				makePurchase(screenNum, numTix);
+				makeReturn(returnScreen, numTix);
+				return 1;
+			}
+			return -1;
+		}
+		return 0;
+	}
+
+	/**
 	 * Gets the remaining amount of available tickets for the
 	 * designated screen
 	 * @param screenNum - the number of the screen

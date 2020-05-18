@@ -13,6 +13,8 @@ public class WebServer {
 	private static final String REPORT_URL = "/report";
 	private static final String PRINT_REPORT_URL = "/report/print";
 	private static final String END_DAY_URL = "/end";
+	private static final String SWAP_URL = "/swap";
+	private static final String SWAP_SUBMIT_URL = "/swap/submit";
 
 	// Freemarker Template Engine - fills in and render a .
 	private TemplateEngine templateEngine;
@@ -43,5 +45,7 @@ public class WebServer {
 		post(PRINT_REPORT_URL, new PostReportRoute());
 		get(REPORT_URL, new GetReportRoute(templateEngine, sales));
 		get(END_DAY_URL, new GetEndDayRoute());
+		get(SWAP_URL, new GetSwapRoute(templateEngine, sales));
+		post(SWAP_SUBMIT_URL, new PostSwapRoute(sales));
 	}
 }
